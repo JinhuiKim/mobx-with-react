@@ -1,44 +1,24 @@
 import React, { Component } from "react";
-import { observable, action } from "mobx";
-import { observer } from "mobx-react";
+import { observer, inject } from "mobx-react";
 
 /**
- * setState없이 값을 바꿔주면 알아서 렌더링 됨
- * 코드 최하단의 observer가 observable 값이 변할 때 컴보넌트의 forceUpdate를 호출하게 함으로써 자동으로 변화가 화면에 반영됨
+ * inject 함수는 mobx-react에 있는 함수로서, 컴포넌트에서 스토어에 접근할 수 있게 해준다.
+ * 정확히는, 스토어에 있는 값을 컴포넌트의 props로 "주입"해준다.
+ * inject('스토어이름')을 하면 컴포넌트에서 해당 스토어를 props로 전달받아서 사용 할 수 있게 된다.
  */
-// **** 최하단에 잇던 observer 가 이렇게 위로 올라옵니다.
+@inject("counter")
 @observer
 class Counter extends Component {
-  @observable number = 0;
-
-  @action
-  increase = () => {
-    this.number++;
-  };
-
-  @action
-  decrease = () => {
-    this.number--;
-  };
-
   render() {
+    const { counter } = this.props;
     return (
       <div>
-        <h1>{this.number}</h1>
-        <button onClick={this.increase}>+1</button>
-        <button onClick={this.decrease}>-1</button>
+        <h1>{counter.number}</h1>
+        <button onClick={counter.increase}>+1</button>
+        <button onClick={counter.decrease}>-1</button>
       </div>
     );
   }
 }
 
-// **** decorate 는 더 이상 필요 없어집니다.
-// decorate(Counter, {
-//   number: observable,
-//   increase: action,
-//   decrease: action
-// })
-
-// export default observer(Counter);
-// **** observer 는 코드의 상단으로 올라갑니다.
 export default Counter;
