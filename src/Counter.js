@@ -2,20 +2,23 @@ import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 
 /**
- * inject 함수는 mobx-react에 있는 함수로서, 컴포넌트에서 스토어에 접근할 수 있게 해준다.
- * 정확히는, 스토어에 있는 값을 컴포넌트의 props로 "주입"해준다.
- * inject('스토어이름')을 하면 컴포넌트에서 해당 스토어를 props로 전달받아서 사용 할 수 있게 된다.
+ * 리덕스에서의 mapStateToProps / mapDispatchToProps처럼 스토어의 특정 값이나 함수만 넣어주고 싶다면
  */
-@inject("counter")
+// **** 함수형태로 파라미터를 전달해주면 특정 값만 받아올 수 있음.
+@inject((stores) => ({
+  number: stores.counter.number,
+  increase: stores.counter.increase,
+  decrease: stores.counter.decrease,
+}))
 @observer
 class Counter extends Component {
   render() {
-    const { counter } = this.props;
+    const { number, increase, decrease } = this.props;
     return (
       <div>
-        <h1>{counter.number}</h1>
-        <button onClick={counter.increase}>+1</button>
-        <button onClick={counter.decrease}>-1</button>
+        <h1>{number}</h1>
+        <button onClick={increase}>+1</button>
+        <button onClick={decrease}>-1</button>
       </div>
     );
   }
