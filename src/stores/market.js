@@ -3,6 +3,11 @@ import { observable, action, computed } from "mobx";
 export default class MarketStore {
   @observable selectedItems = [];
 
+  // 루트 스토어 값을 저장
+  constructor(root) {
+    this.root = root;
+  }
+
   @action
   put = (name, price) => {
     // 존재하는지 찾고
