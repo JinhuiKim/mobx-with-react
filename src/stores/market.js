@@ -10,6 +10,8 @@ export default class MarketStore {
 
   @action
   put = (name, price) => {
+    // market에서 counter에 접근
+    const { number } = this.root.counter;
     // 존재하는지 찾고
     const exists = this.selectedItems.find((item) => item.name === name);
     if (!exists) {
@@ -17,12 +19,12 @@ export default class MarketStore {
       this.selectedItems.push({
         name,
         price,
-        count: 1,
+        count: number,
       });
       return;
     }
-    // 존재 한다면 count 값만 올립니다.
-    exists.count++;
+    // market에서 상품을 한번 집어 올 때 마다 카운터에 있는 상태의 갯수만큼 들고오게 구현
+    exists.count += number;
   };
 
   @action
